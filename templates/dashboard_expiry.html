@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expiry Dashboard</title>
+    <style>
+        .alert-red { background-color: #f8d7da; }
+        .alert-amber { background-color: #fff3cd; }
+        .alert-ok { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+    <h1>Insurance / FC / Tax Expiry Dashboard - {{ year }}</h1>
+
+    <form method="GET" action="/dashboard/expiry">
+        <label for="year">Select Year:</label>
+        <select name="year" onchange="this.form.submit()">
+            {% for y in years %}
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <br>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Vehicle No</th>
+            <th>Insurance</th>
+            <th>FC</th>
+            <th>Tax</th>
+        </tr>
+        {% for vehicle, statuses in alerts.items() %}
+        <tr>
+            <td>{{ vehicle }}</td>
+            {% for field in ['insurance', 'fc', 'tax'] %}
+            <td class="alert-{{ statuses[field] }}">{{ statuses[field]|upper }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <br><a href="/">⬅ Back to Main Dashboard</a>
+</body>
+</html>

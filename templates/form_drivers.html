@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Driver Info</title>
+</head>
+<body>
+    <h2>Add Driver Info</h2>
+    <form method="POST">
+        <label>Driver Name:</label>
+        <input type="text" name="name" required><br><br>
+
+        <label>Vehicle No:</label>
+        <select name="vehicle_no" required>
+            {% for v in vehicle_list %}
+                <option value="{{ v }}">{{ v }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Monthly Salary (₹):</label>
+        <input type="number" name="salary" required><br><br>
+
+        <label>Advance Paid (₹):</label>
+        <input type="number" name="advance"><br><br>
+
+        <label>Remarks:</label>
+        <input type="text" name="remarks"><br><br>
+
+        <label>Date:</label>
+        <input type="date" name="date" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <form action="/undo/driver" method="get">
+      <button type="submit" onclick="return confirm('Undo last driver entry?')">↩️ Undo Last Entry</button>
+    </form>
+    <p><a href='/'>⬅ Back to Dashboard</a></p>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Vehicle</title>
+</head>
+<body>
+    <h2>Add Vehicle</h2>
+    <form method="POST">
+        <label>Vehicle No:</label>
+        <input type="text" name="vehicle_no" placeholder="TN01AB1234" required><br><br>
+
+        <label>Type:</label>
+        <input type="text" name="type" placeholder="Truck 9ft" required><br><br>
+
+        <label>Insurance Expiry:</label>
+        <input type="date" name="insurance" required><br><br>
+
+        <label>FC Expiry:</label>
+        <input type="date" name="fc"><br><br>
+
+        <label>Tax Expiry:</label>
+        <input type="date" name="tax"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <form action="/undo/vehicle" method="get">
+      <button type="submit" onclick="return confirm('Undo last vehicle entry?')">↩️ Undo Last Entry</button>
+    </form>
+    <br>
+    <a href="/">⬅ Back to Dashboard</a>
+</body>
+</html>

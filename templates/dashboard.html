@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fleet Tracker Home</title>
+</head>
+<body>
+    <h1>Welcome to Fleet Tracker</h1>
+
+    <h2>Dashboards</h2>
+    <ul>
+        <li><a href="/dashboard/expiry">📆 Expiry Dashboard</a></li>
+        <li><a href="/dashboard/expenses?frequency=monthly">📊 Expense Summary Dashboard</a></li>
+        {% for vehicle in vehicles %}
+        <li><a href="/dashboard/vehicle/{{ vehicle }}">🚛 {{ vehicle }} - Vehicle Breakdown</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Data Entry</h2>
+    <ul>
+        <li><a href="/add/vehicle">➕ Add Vehicle</a></li>
+        <li><a href="/add/trip">📍 Log Trip</a></li>
+        <li><a href="/add/expense">🔧 Add Expense</a></li>
+        <li><a href="/add/fuel">⛽ Add Fuel Entry</a></li>
+        <li><a href="/add/driver">👷 Add Driver Info</a></li>
+    </ul>
+</body>
+</html>

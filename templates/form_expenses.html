@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Expense</title>
+</head>
+<body>
+    <h2>Add Expense</h2>
+    <form method="POST">
+        <label>Date:</label> <input type="date" name="date" required><br><br>
+        <label>Vehicle No:</label>
+        <select name="vehicle_no" required>
+            {% for v in vehicle_list %}
+                <option value="{{ v }}">{{ v }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label>Type (maintenance/accident/etc):</label>
+        <input type="text" name="type" required><br><br>
+        <label>Amount:</label> <input type="number" name="amount" required><br><br>
+        <label>Details:</label> <input type="text" name="details"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <form action="/undo/expense" method="get">
+      <button type="submit" onclick="return confirm('Undo last expense entry?')">↩️ Undo Last Entry</button>
+    </form>
+    <p><a href='/'>⬅ Back to Dashboard</a></p>
+</body>
+</html>

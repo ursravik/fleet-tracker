@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expenses Dashboard</title>
+    <style>
+        .profit { color: green; }
+        .loss { color: red; }
+        table { border-collapse: collapse; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Fleet Expenses Report - {{ frequency|capitalize }} ({{ year }})</h1>
+
+    <form method="GET" action="/dashboard/expenses">
+        <label>Year:</label>
+        <select name="year">
+            {% for y in years %}
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Frequency:</label>
+        <select name="frequency">
+            {% for f in ['daily', 'weekly', 'monthly', 'yearly'] %}
+                <option value="{{ f }}" {% if f == frequency %}selected{% endif %}>{{ f.capitalize() }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Vehicle (optional):</label>
+        <select name="vehicle">
+            <option value="">All Vehicles</option>
+            {% for v in vehicles %}
+                <option value="{{ v }}" {% if v == selected_vehicle %}selected{% endif %}>{{ v }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">View</button>
+    </form>
+
+    <br>
+    <a href="/export/expenses?year={{ year }}&frequency={{ frequency }}{% if selected_vehicle %}&vehicle={{ selected_vehicle }}{% endif %}">
+        <button>Export to CSV</button>
+    </a>
+
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Period</th>
+                <th>Revenue (₹)</th>
+                <th>Fuel (₹)</th>
+                <th>Expenses (₹)</th>
+                <th>Salary (₹)</th>
+                <th>Advance (₹)</th>
+                <th>Operational Expense (₹)</th>
+                <th>Net Profit/Loss (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set totals = {'revenue': 0, 'fuel': 0, 'expense': 0, 'salary': 0, 'advance': 0} %}
+            {% for period, row in summary.items() %}
+                {% set op_expense = row.fuel + row.expense + row.salary + row.advance %}
+                {% set net = row.revenue - op_expense %}
+                {% set totals = {
+                    'revenue': totals.revenue + row.revenue,
+                    'fuel': totals.fuel + row.fuel,
+                    'expense': totals.expense + row.expense,
+                    'salary': totals.salary + row.salary,
+                    'advance': totals.advance + row.advance
+                } %}
+                <tr>
+                    <td>{{ period }}</td>
+                    <td>{{ row.revenue }}</td>
+                    <td>{{ row.fuel }}</td>
+                    <td>{{ row.expense }}</td>
+                    <td>{{ row.salary }}</td>
+                    <td>{{ row.advance }}</td>
+                    <td>{{ op_expense }}</td>
+                    <td class="{{ 'profit' if net >= 0 else 'loss' }}">{{ net }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            {% set total_op = totals.fuel + totals.expense + totals.salary + totals.advance %}
+            {% set total_net = totals.revenue - total_op %}
+            <tr>
+                <th>Total</th>
+                <th>{{ totals.revenue }}</th>
+                <th>{{ totals.fuel }}</th>
+                <th>{{ totals.expense }}</th>
+                <th>{{ totals.salary }}</th>
+                <th>{{ totals.advance }}</th>
+                <th>{{ total_op }}</th>
+                <th class="{{ 'profit' if total_net >= 0 else 'loss' }}">{{ total_net }}</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <br><a href="/">⬅ Back to Main Dashboard</a>
+</body>
+</html>

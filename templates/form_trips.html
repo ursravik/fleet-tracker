@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Trip</title>
+</head>
+<body>
+    <h2>Log Trip</h2>
+    <form method="POST">
+        <label>Date:</label>
+        <input type="date" name="date" required><br><br>
+
+        <label>Vehicle No:</label>
+        <select name="vehicle_no" required>
+            {% for v in vehicle_list %}
+                <option value="{{ v }}">{{ v }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>KMs Run:</label>
+        <input type="number" name="kms" required><br><br>
+
+        <label>Revenue:</label>
+        <input type="number" name="revenue" required><br><br>
+
+        <label>Mode:</label>
+        <select name="mode" required>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+        </select><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <form action="/undo/trip" method="get">
+      <button type="submit" onclick="return confirm('Undo last trip entry?')">↩️ Undo Last Entry</button>
+    </form>
+    <p><a href='/'>⬅ Back to Dashboard</a></p>
+</body>
+</html>

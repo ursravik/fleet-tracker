@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ vehicle_id }} - Expense Breakdown</title>
+    <style>
+        .profit { color: green; }
+        .loss { color: red; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Vehicle Expense Report – {{ vehicle_id }} ({{ year }})</h1>
+
+    <form method="GET">
+        <label>Year:</label>
+        <select name="year">
+            {% for y in years %}
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Frequency:</label>
+        <select name="frequency">
+            {% for f in ['daily', 'weekly', 'monthly', 'yearly'] %}
+                <option value="{{ f }}" {% if f == frequency %}selected{% endif %}>{{ f.capitalize() }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">View</button>
+    </form>
+
+    <br>
+    <table>
+        <tr>
+            <th>Period</th>
+            <th>Revenue (₹)</th>
+            <th>Fuel (₹)</th>
+            <th>Expenses (₹)</th>
+            <th>Salary (₹)</th>
+            <th>Advance (₹)</th>
+            <th>Total Expense (₹)</th>
+            <th>Net Profit/Loss (₹)</th>
+        </tr>
+        {% for period, row in data.items() %}
+        {% set total = row.fuel + row.expense + row.salary + row.advance %}
+        {% set net = row.revenue - total %}
+        <tr>
+            <td>{{ period }}</td>
+            <td>{{ row.revenue }}</td>
+            <td>{{ row.fuel }}</td>
+            <td>{{ row.expense }}</td>
+            <td>{{ row.salary }}</td>
+            <td>{{ row.advance }}</td>
+            <td>{{ total }}</td>
+            <td class="{{ 'profit' if net >= 0 else 'loss' }}">{{ net }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br><a href="/">⬅ Back to Main Dashboard</a>
+</body>
+</html>
